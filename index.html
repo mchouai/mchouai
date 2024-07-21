@@ -3,9 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(to right, #0061ff, #60efff);
+            color: white;
+        }
+
+        .header-content {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .photo img {
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-bar {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .nav-link {
+            color: white;
+            margin: 0 15px;
+            cursor: pointer;
+            transition: color 0.3s, border-bottom 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: #ffd700;
+            border-bottom: 2px solid #ffd700;
+        }
+
+        .skill-icon {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .skill-icon i {
+            margin-right: 10px;
+        }
+
+        .skill-level {
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .skill-level div {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .html { width: 90%; background-color: #e34c26; }
+        .css { width: 85%; background-color: #264de4; }
+        .js { width: 80%; background-color: #f0db4f; }
+        .vue { width: 75%; background-color: #42b883; }
+        .python { width: 80%; background-color: #3776ab; }
+        .django { width: 70%; background-color: #092e20; }
+        .dotnet { width: 60%; background-color: #512bd4; }
+
+        footer {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+        }
+        
+        footer a {
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #333;
+        }
+
+        .social-media a {
+            transition: transform 0.3s;
+        }
+
+        .social-media a:hover {
+            transform: scale(1.2);
+        }
+    </style>
 </head>
-<body>
-    
+<body class="bg-gray-100 text-gray-800">
+    <div id="app" class="container mx-auto p-4">
+        <header class="header flex flex-col justify-between items-center py-8 mb-8 rounded-lg">
+            <div class="header-content flex justify-between items-center w-full">
+                <div class="title flex items-center">
+                    <div class="title">
+                        <h1 class="text-4xl font-bold">{{ name }}</h1>
+                        <p class="text-lg text-gray-300">{{ title }}</p>
+                    </div>
+                    <nav class="nav-bar mt-4">
+                        <a href="#about" class="nav-link">About</a>
+                        <a href="#education" class="nav-link">Education</a>
+                        <a href="#skills" class="nav-link">Skills</a>
+                        <a href="#experience" class="nav-link">Experience</a>
+                        <a href="#projects" class="nav-link">Projects</a>
+                    </nav>
+                </div>
+                <div class="photo">
+                    <img :src="photo" alt="Profile Photo" class="w-32 h-32">
+                </div>
+            </div>
+        </header>
+        <main class="bg-white p-6 rounded-lg shadow-md">
+            <section id="about" class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4">About Me</h2>
+                <p>{{ about }}</p>
+            </section>
+            <section id="education" class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4">Education</h2>
+                <ul class="list-disc pl-5">
+                    <li v-for="edu in education" :key="edu.institution">
+                        <a :href="edu.link" target="_blank" class="flex items-center mb-2">
+                            <img :src="edu.logo" alt="Institution Logo" class="w-10 h-10 inline-block mr-2">
+                            <span>{{ edu.institution }} - {{ edu.degree }} - {{ edu.year }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section id="skills" class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4">Skills</h2>
+                <div v-for="skill in skills" :key="skill.name" class="skill-icon">
+                    <i :class="skill.icon" class="text-2xl"></i>
+                    <div class="flex-grow">
+                        <p>{{ skill.name }}</p>
+                        <div class="skill-level">
+                            <div :class="skill.level"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="experience" class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4">Experience</h2>
+                <ul class="list-disc pl-5">
+                    <li v-for="exp in experience" :key="exp.company">
+                        <a :href="exp.link" target="_blank" class="flex items-center mb-2">
+                            <img :src="exp.logo" alt="Company Logo" class="w-10 h-10 inline-block mr-2">
+                            <span>{{ exp.company }} - {{ exp.position }} ({{ exp.start }} - {{ exp.end }})</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section id="projects" class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4">Projects</h2>
+                <ul class="list-disc pl-5">
+                    <li v-for="project in projects" :key="project.name">
+                        <a :href="project.link" class="text-blue-500 hover:underline">{{ project.name }}</a> - {{ project.description }}
+                    </li>
+                </ul>
+            </section>
+        </main>
+        <footer class="py-4 border-t-2 border-gray-200 text-center mt-8">
+            <div class="social-media flex justify-center space-x-6">
+                <a :href="linkedin" target="_blank" class="text-blue-600 text-2xl"><i class="fab fa-linkedin"></i></a>
+                <a :href="github" target="_blank" class="text-gray-900 text-2xl"><i class="fab fa-github"></i></a>
+                <a href="mailto:your-email@gmail.com" target="_blank" class="text-red-600 text-2xl"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.youtube.com/yourchannel" target="_blank" class="text-red-600 text-2xl"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/yourprofile" target="_blank" class="text-pink-600 text-2xl"><i class="fab fa-instagram"></i></a>
+            </div>
+        </footer>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                name: 'Mohamed Chouai',
+                title: 'Software Engineer | Full Stack Developer',
+                photo: 'static/img/profile.jpg',
+                about: "Passionné de la programmation et des défis compétitifs, je me définis en tant que développeur spécialisé en Python/Django. Titulaire d'un diplôme d'Ingénieur d'État en Génie Informatique. Mon objectif est de continuer à évoluer, d'apprendre en permanence et de contribuer à des projets novateurs.",
+                education: [
+                { institution: 'ENSEM', degree: 'Engineering Degree', year: '2020 - 2023', logo: 'https://portal.ensem.ac.ma/wp-content/uploads/2021/04/logo_ensem_officiel.jpg', link: 'https://ensem.ac.ma/' },
+                    { institution: 'CPGE', degree: 'Classe préparatoire', year: '2018 - 2020', logo: 'static/img/cpge_logo.png', link: 'https://cpge.ac.ma/' },
+                ],
+                skills: [
+                    { name: 'HTML', icon: 'fab fa-html5', level: 'html' },
+                    { name: 'CSS', icon: 'fab fa-css3-alt', level: 'css' },
+                    { name: 'JavaScript', icon: 'fab fa-js', level: 'js' },
+                    { name: 'Vue.js', icon: 'fab fa-vuejs', level: 'vue' },
+                    { name: 'Python', icon: 'fab fa-python', level: 'python' },
+                    { name: 'Django', icon: 'fab fa-python', level: 'django' },
+                    { name: '.NET', icon: 'fab fa-microsoft', level: 'dotnet' }
+                ],
+                experience: [
+                    { company: 'Smarteez', position: 'Backend Developer', start: 'Jan 2023', end: 'Jul 2023', logo: 'static/img/smarteez_logo.png', link: 'https://smarteez.com/' },
+                    { company: 'Arkeos', position: 'Django Developer', start: 'Aug 2022', end: 'Nov 2022', logo: 'static/img/arkeos_logo.png', link: 'https://arkeos.com/' },
+                    { company: 'GM Solutions', position: 'Developer Intern', start: 'Jun 2022', end: 'Jul 2022', logo: 'static/img/gmsolutions_logo.png', link: 'https://gmsolutions.com/' },
+                ],
+                projects: [
+                    { name: 'Project Name', description: 'Project Description', link: '#' }
+                ],
+                linkedin: 'https://www.linkedin.com/in/yourprofile',
+                github: 'https://github.com/yourprofile'
+            }
+        });
+    </script>
 </body>
 </html>
+
